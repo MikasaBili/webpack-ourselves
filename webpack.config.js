@@ -30,6 +30,10 @@ module.exports = {
         test: /\.js$/,
         use: ['babel-loader','eslint-loader'],
         exclude: /node_modules/
+      },
+      {
+        test: /template\.html$/,
+        use: ['html-loader']
       }
     ]
   },
@@ -42,7 +46,12 @@ module.exports = {
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
     new HtmlWebpackPlugin({
-    template: './index.html'
+    template: './index.html',
+    inject: 'body',
+    hash: true,
+    minify: {
+        collapseWhitespace: true
+    }
   })
   ]
 }

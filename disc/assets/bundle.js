@@ -59,7 +59,7 @@
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "406491fdbd4c7d7f4bc0"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "1ca30c366b0b1b99aa88"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotMainModule = true; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
@@ -706,7 +706,7 @@
 /******/ 	__webpack_require__.h = function() { return hotCurrentHash; };
 
 /******/ 	// Load entry module and return exports
-/******/ 	return hotCreateRequire(1)(__webpack_require__.s = 1);
+/******/ 	return hotCreateRequire(5)(__webpack_require__.s = 5);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -721,6 +721,41 @@ const query = {
   },
   domAll: (element) => {
     return document.querySelectorAll(element);
+  },
+  domNew: class DomNew {
+    //默认方法
+    constructor (tagName = 'div', style={}, content=[]) {
+      this.tagName = tagName;
+      this.style = style;
+      this.content = content;
+      this.event = [];
+    }
+    //创建elements
+    Create () {
+      const tag = document.createElement(this.tagName);
+      const style = this.style;
+      const content = this.content;
+      for (let i in style) {
+        tag.setAttribute(i,style[i]);
+      }
+      this.event.forEach(event => {
+        tag.addEventListener(event.type, event.listener);
+      })
+      Array.from(content).forEach(child => {
+        console.log(child instanceof DomNew);
+        const childEl = (child instanceof DomNew) ? child.Create() : document.createTextNode(child);
+        tag.appendChild(childEl);
+      });
+      return tag
+    }
+    //添加监听
+    setEvent(type,listener) {
+      this.event.push({
+        type: type,
+        listener: listener
+      })
+      return this
+    }
   }
 }
 /* harmony export (immutable) */ __webpack_exports__["a"] = query;
@@ -732,11 +767,106 @@ const query = {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__query_js__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__template_js__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__src_query_js__ = __webpack_require__(0);
 
-alert('11')
-console.log(1111)
-__WEBPACK_IMPORTED_MODULE_0__query_js__["a" /* query */].dom('.main').innerHTML = 123
+
+
+const Page = (parent) => {
+  const dom = __WEBPACK_IMPORTED_MODULE_1__src_query_js__["a" /* query */].dom(parent)
+  dom.innerHTML = __WEBPACK_IMPORTED_MODULE_0__template_js__["a" /* default */]
+}
+
+/***/ }),
+/* 2 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+// 判断hash改变
+class changeHash {
+  constructor (hashArray = []) {
+    this.hashArray = hashArray;
+    this.setHashForWindow()
+  }
+  setHashForWindow () {
+    window.addEventListener('hashchange', this.disHash())
+  }
+  disHash () {
+    const hash = this.hashArray;
+    hash.forEach( (val)=> {
+      if (location.hash.replace('#','') === val.hash) {
+        // alert(val.hash)
+        // require.ensure(['../components/test/index.js'], function(require) {
+        //   require('../components/test/index.js').Page('.bodyName')
+        // })
+      }
+    })
+  }
+}
+/* unused harmony export changeHash */
+
+
+/***/ }),
+/* 3 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony default export */ __webpack_exports__["a"] = [
+  {
+    title: 'default',
+    hash: '/'
+  },
+  {
+    title: 'title1',
+    url: 'www.baidu.com',
+    hash: '/test'
+  },
+  {
+    title: 'title2',
+    url: 'www.baidu.com',
+    hash: '/test2'
+  }
+];
+
+/***/ }),
+/* 4 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony default export */ __webpack_exports__["a"] = () => {
+  return `
+  <div>123123</div>
+  `
+};
+
+
+/***/ }),
+/* 5 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__query_js__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__menu_js__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__hash_js__ = __webpack_require__(2);
+
+
+
+const ss = __webpack_require__(1)
+const menuArray = []
+
+__WEBPACK_IMPORTED_MODULE_1__menu_js__["a" /* default */].forEach((val)=>{
+  const menuLi = new __WEBPACK_IMPORTED_MODULE_0__query_js__["a" /* query */].domNew('li',{},[val.title])
+  menuLi.setEvent('click', (hash) => {
+    window.location.hash = val.hash;
+  })
+  menuArray.push(menuLi)
+})
+
+let content = new __WEBPACK_IMPORTED_MODULE_0__query_js__["a" /* query */].domNew('ul',{class: 'isShow'},menuArray);
+__WEBPACK_IMPORTED_MODULE_0__query_js__["a" /* query */].dom('.main').appendChild(content.Create());
+
+// new changeHash (Menu)
 
 /***/ })
 /******/ ]);

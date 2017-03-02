@@ -26,6 +26,7 @@ export const query = {
         tag.addEventListener(event.type, event.listener);
       })
       Array.from(content).forEach(child => {
+        console.log(child instanceof DomNew);
         const childEl = (child instanceof DomNew) ? child.Create() : document.createTextNode(child);
         tag.appendChild(childEl);
       });

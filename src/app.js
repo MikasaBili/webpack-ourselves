@@ -1,5 +1,19 @@
 import {query} from './query.js'
-import Menu from './menu.js'
-let content = new query.domNew('div',{class: 'isShow'}, ['123',new query.domNew('div',{class: 'test'})]);
-query.dom('.main').appendChild(content.setEvent('click', ()=> {alert('1')}).Create())
-console.log()
+import {Menu,Router} from './menu.js'
+import {changeHash} from './hash.js'
+
+const menuArray = []
+
+Menu.forEach((val)=>{
+  const menuLi = new query.domNew('li',{},[val.title])
+  menuLi.setEvent('click', (hash) => {
+    window.location.hash = val.hash;
+  })
+  menuArray.push(menuLi)
+})
+
+let content = new query.domNew('ul',{class: 'isShow'},menuArray);
+
+query.dom('.main').appendChild(content.Create());
+
+const router = new changeHash (Router)
