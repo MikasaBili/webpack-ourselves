@@ -1,5 +1,5 @@
-//菜单和路由统一管理
-import {query} from './query.js';
+// 菜单和路由统一管理
+import {query} from './query.js'
 const Menu = [
   {
     title: 'default',
@@ -21,19 +21,19 @@ const Router = [
   {
     hash: '/',
     body: () => {
-      query.dom('.bodyName').innerHTML = '';
+      query.dom('.bodyName').innerHTML = ''
     }
   },
   {
     hash: '/test',
     body: () => {
-      require('../components/test/index.js').Page('.bodyName');
+      require('../components/test/index.js').Page('.bodyName')
     }
   },
   {
     hash: '/test2',
     body: () => {
-      require('../components/test2/index.js').Page('.bodyName');
+      require('../components/test2/index.js').Page('.bodyName')
     }
   }
 ]

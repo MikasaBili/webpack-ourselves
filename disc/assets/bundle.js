@@ -59,7 +59,7 @@
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "1ca30c366b0b1b99aa88"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "c60ebeeceebd5ee93eb6"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotMainModule = true; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
@@ -706,167 +706,366 @@
 /******/ 	__webpack_require__.h = function() { return hotCurrentHash; };
 
 /******/ 	// Load entry module and return exports
-/******/ 	return hotCreateRequire(5)(__webpack_require__.s = 5);
+/******/ 	return hotCreateRequire(7)(__webpack_require__.s = 7);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-//定位dom
-const query = {
-  dom: (element) => {
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+// 定位dom
+var query = exports.query = {
+  dom: function dom(element) {
     return document.querySelector(element);
   },
-  domAll: (element) => {
+  domAll: function domAll(element) {
     return document.querySelectorAll(element);
   },
-  domNew: class DomNew {
-    //默认方法
-    constructor (tagName = 'div', style={}, content=[]) {
+  DomNew: function () {
+    // 默认方法
+    function DomNew() {
+      var tagName = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'div';
+      var style = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+      var content = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : [];
+
+      _classCallCheck(this, DomNew);
+
       this.tagName = tagName;
       this.style = style;
       this.content = content;
       this.event = [];
     }
-    //创建elements
-    Create () {
-      const tag = document.createElement(this.tagName);
-      const style = this.style;
-      const content = this.content;
-      for (let i in style) {
-        tag.setAttribute(i,style[i]);
-      }
-      this.event.forEach(event => {
-        tag.addEventListener(event.type, event.listener);
-      })
-      Array.from(content).forEach(child => {
-        console.log(child instanceof DomNew);
-        const childEl = (child instanceof DomNew) ? child.Create() : document.createTextNode(child);
-        tag.appendChild(childEl);
-      });
-      return tag
-    }
-    //添加监听
-    setEvent(type,listener) {
-      this.event.push({
-        type: type,
-        listener: listener
-      })
-      return this
-    }
-  }
-}
-/* harmony export (immutable) */ __webpack_exports__["a"] = query;
+    //  创建elements
 
+
+    _createClass(DomNew, [{
+      key: 'Create',
+      value: function Create() {
+        var tag = document.createElement(this.tagName);
+        var style = this.style;
+        var content = this.content;
+        for (var i in style) {
+          tag.setAttribute(i, style[i]);
+        }
+        this.event.forEach(function (event) {
+          tag.addEventListener(event.type, event.listener);
+        });
+        Array.from(content).forEach(function (child) {
+          console.log(child instanceof DomNew);
+          var childEl = child instanceof DomNew ? child.Create() : document.createTextNode(child);
+          tag.appendChild(childEl);
+        });
+        return tag;
+      }
+      // 添加监听
+
+    }, {
+      key: 'setEvent',
+      value: function setEvent(type, listener) {
+        this.event.push({
+          type: type,
+          listener: listener
+        });
+        return this;
+      }
+    }]);
+
+    return DomNew;
+  }()
+};
 
 /***/ }),
 /* 1 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__template_js__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__src_query_js__ = __webpack_require__(0);
 
 
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 
-const Page = (parent) => {
-  const dom = __WEBPACK_IMPORTED_MODULE_1__src_query_js__["a" /* query */].dom(parent)
-  dom.innerHTML = __WEBPACK_IMPORTED_MODULE_0__template_js__["a" /* default */]
-}
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+// 判断hash改变
+var ChangeHash = exports.ChangeHash = function () {
+  function ChangeHash() {
+    var hashArray = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+
+    _classCallCheck(this, ChangeHash);
+
+    this._hash = '';
+    this.hashArray = hashArray;
+  }
+
+  _createClass(ChangeHash, [{
+    key: 'setHashForWindow',
+    value: function setHashForWindow() {
+      var _this = this;
+
+      window.addEventListener('hashchange', function () {
+        _this.hashName = location.hash.replace('#', '');
+      }, false);
+    }
+  }, {
+    key: 'disHash',
+    value: function disHash() {
+      var _this2 = this;
+
+      var hash = this.hashArray;
+      hash.forEach(function (val) {
+        if (val.hash === _this2._hash) {
+          val.body();
+        }
+      });
+    }
+  }, {
+    key: 'hashName',
+    set: function set(value) {
+      this._hash = value;
+      this.disHash();
+    },
+    get: function get() {
+      return console.log(this._hash);
+    }
+  }]);
+
+  return ChangeHash;
+}();
 
 /***/ }),
 /* 2 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-// 判断hash改变
-class changeHash {
-  constructor (hashArray = []) {
-    this.hashArray = hashArray;
-    this.setHashForWindow()
-  }
-  setHashForWindow () {
-    window.addEventListener('hashchange', this.disHash())
-  }
-  disHash () {
-    const hash = this.hashArray;
-    hash.forEach( (val)=> {
-      if (location.hash.replace('#','') === val.hash) {
-        // alert(val.hash)
-        // require.ensure(['../components/test/index.js'], function(require) {
-        //   require('../components/test/index.js').Page('.bodyName')
-        // })
-      }
-    })
-  }
-}
-/* unused harmony export changeHash */
 
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.Router = exports.Menu = undefined;
+
+var _query = __webpack_require__(0);
+
+var Menu = [{
+  title: 'default',
+  hash: '/'
+}, {
+  title: 'title1',
+  url: 'www.baidu.com',
+  hash: '/test'
+}, {
+  title: 'title2',
+  url: 'www.baidu.com',
+  hash: '/test2'
+}]; // 菜单和路由统一管理
+
+
+var Router = [{
+  hash: '/',
+  body: function body() {
+    _query.query.dom('.bodyName').innerHTML = '';
+  }
+}, {
+  hash: '/test',
+  body: function body() {
+    __webpack_require__(5).Page('.bodyName');
+  }
+}, {
+  hash: '/test2',
+  body: function body() {
+    __webpack_require__(3).Page('.bodyName');
+  }
+}];
+
+exports.Menu = Menu;
+exports.Router = Router;
 
 /***/ }),
 /* 3 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony default export */ __webpack_exports__["a"] = [
-  {
-    title: 'default',
-    hash: '/'
-  },
-  {
-    title: 'title1',
-    url: 'www.baidu.com',
-    hash: '/test'
-  },
-  {
-    title: 'title2',
-    url: 'www.baidu.com',
-    hash: '/test2'
-  }
-];
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.Page = undefined;
+
+var _template = __webpack_require__(4);
+
+var _query = __webpack_require__(0);
+
+var Page = exports.Page = function Page(parent) {
+  _query.query.dom(parent).innerHTML = new _template.Template(['a', 'b']).build();
+};
 
 /***/ }),
 /* 4 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony default export */ __webpack_exports__["a"] = () => {
-  return `
-  <div>123123</div>
-  `
-};
 
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Template = exports.Template = function () {
+  function Template() {
+    var style = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+
+    _classCallCheck(this, Template);
+
+    this.style = style;
+    this.attr = [];
+    this.attrs = '';
+    if (style.length) {
+      this.join();
+    }
+  }
+
+  _createClass(Template, [{
+    key: 'join',
+    value: function join() {
+      var _this = this;
+
+      var classAll = this.style;
+      classAll.forEach(function (val) {
+        _this.attr.push(val);
+      });
+
+      this.attrs = this.attr.join(' ');
+    }
+  }, {
+    key: 'build',
+    value: function build() {
+      return '\n    <div class="' + this.attrs + '">qweqwe</div>\n    ';
+    }
+  }]);
+
+  return Template;
+}();
 
 /***/ }),
 /* 5 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__query_js__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__menu_js__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__hash_js__ = __webpack_require__(2);
 
 
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.Page = undefined;
 
-const ss = __webpack_require__(1)
-const menuArray = []
+var _template = __webpack_require__(6);
 
-__WEBPACK_IMPORTED_MODULE_1__menu_js__["a" /* default */].forEach((val)=>{
-  const menuLi = new __WEBPACK_IMPORTED_MODULE_0__query_js__["a" /* query */].domNew('li',{},[val.title])
-  menuLi.setEvent('click', (hash) => {
+var _query = __webpack_require__(0);
+
+var Page = exports.Page = function Page(parent) {
+  var dom = _query.query.dom(parent);
+  dom.innerHTML = new _template.Template().build();
+};
+
+/***/ }),
+/* 6 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Template = exports.Template = function () {
+  function Template() {
+    var style = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+
+    _classCallCheck(this, Template);
+
+    this.style = style;
+    this.attr = [];
+    this.attrs = '';
+    if (style.length) {
+      this.join();
+    }
+  }
+
+  _createClass(Template, [{
+    key: 'join',
+    value: function join() {
+      var _this = this;
+
+      var classAll = this.style;
+      classAll.forEach(function (val) {
+        _this.attr.push(val);
+      });
+
+      this.attrs = this.attr.join(' ');
+    }
+  }, {
+    key: 'build',
+    value: function build() {
+      return '\n    <div class="' + this.attrs + '">123123</div>\n    ';
+    }
+  }]);
+
+  return Template;
+}();
+
+/***/ }),
+/* 7 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _query = __webpack_require__(0);
+
+var _menu = __webpack_require__(2);
+
+var _hash = __webpack_require__(1);
+
+var menuArray = [];
+
+_menu.Menu.forEach(function (val) {
+  var menuLi = new _query.query.DomNew('li', {}, [val.title]);
+  menuLi.setEvent('click', function (hash) {
     window.location.hash = val.hash;
-  })
-  menuArray.push(menuLi)
-})
+  });
+  menuArray.push(menuLi);
+});
 
-let content = new __WEBPACK_IMPORTED_MODULE_0__query_js__["a" /* query */].domNew('ul',{class: 'isShow'},menuArray);
-__WEBPACK_IMPORTED_MODULE_0__query_js__["a" /* query */].dom('.main').appendChild(content.Create());
+var content = new _query.query.DomNew('ul', { class: 'isShow' }, menuArray);
 
-// new changeHash (Menu)
+_query.query.dom('.main').appendChild(content.Create());
+
+var router = new _hash.ChangeHash(_menu.Router);
+router.setHashForWindow();
 
 /***/ })
 /******/ ]);

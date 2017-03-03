@@ -1,21 +1,21 @@
-export class template {
-  constructor(style = []) {
-    this.style = style;
-    this.attr = [];
-    this.attrs = '';
+export class Template {
+  constructor (style = []) {
+    this.style = style
+    this.attr = []
+    this.attrs = ''
     if (style.length) {
-      this.join();
+      this.join()
     }
   }
   join () {
     const classAll = this.style
-    classAll.forEach((val)=> {
+    classAll.forEach((val) => {
       this.attr.push(val)
     })
 
-    this.attrs = this.attr.join(' ');
+    this.attrs = this.attr.join(' ')
   }
-  build() {
+  build () {
     return `
     <div class="${this.attrs}">qweqwe</div>
     `
